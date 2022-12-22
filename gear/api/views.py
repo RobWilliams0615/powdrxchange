@@ -4,11 +4,21 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 
-@api_view()
-def gear_list(request ):
-  gears = Gear.objects.all()
-  serializer = GearSerializer(gears, many=True)
-  return Response(serializer.data)
+@api_view(['GET', 'POST'])
+def gear_list(request):
+  if request.method == 'GET':
+    gears = Gear.objects.all()
+    serializer = GearSerializer(gears, many=True)
+    return Response(serializer.data)
+
+  if request.method == 'POST':
+    serializer = GearSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+      return Response(serializer.errors)
+  
 
 @api_view()
 def gear_details(request, pk):
