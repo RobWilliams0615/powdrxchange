@@ -20,8 +20,25 @@ def gear_list(request):
       return Response(serializer.errors)
   
 
-@api_view()
+@api_view(['GET', 'PUT', 'DELETE'])
 def gear_details(request, pk):
+
+  if request.method == 'GET':
     gear = Gear.objects.get(pk=pk)
     serializer = GearSerializer(gear)
     return Response(serializer.data)
+
+  if request.method == 'PUT':
+    gear = Gear.objects.get(pk=pk)
+    serializer = GearSerializer(data=request.data)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data)
+    else:
+      return Response(serializer.errors)
+
+
+  if request.method == 'DELETE':
+    gear = Gear.objects.get(pk=pk)
+    gear.delete()
+    return Response(status=204)
