@@ -1,4 +1,5 @@
 from gear.models import Gear
+from rest_framework import status
 from gear.api.serializers import GearSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -9,7 +10,7 @@ def gear_list(request):
   if request.method == 'GET':
     gears = Gear.objects.all()
     serializer = GearSerializer(gears, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
   if request.method == 'POST':
     serializer = GearSerializer(data=request.data)
@@ -17,7 +18,7 @@ def gear_list(request):
         serializer.save()
         return Response(serializer.data)
     else:
-      return Response(serializer.errors)
+      return Response(serializer.errors, status=status.HTTP_201_CREATED)
   
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -35,10 +36,10 @@ def gear_details(request, pk):
       serializer.save()
       return Response(serializer.data)
     else:
-      return Response(serializer.errors)
+      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
   if request.method == 'DELETE':
     gear = Gear.objects.get(pk=pk)
     gear.delete()
-    return Response(status=204)
+    return Response(status=status.HTTP_204_NO_CONTENT)
