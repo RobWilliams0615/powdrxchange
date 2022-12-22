@@ -17,4 +17,5 @@ class GearSerializer(serializers.Serializer):
     instance.description = validated_data.get('description', instance.description)
     instance.price = validated_data.get('price', instance.price)
     instance.active = validated_data.get('active', instance.active)
+    instance.save()
     return instance

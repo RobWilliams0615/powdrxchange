@@ -30,7 +30,7 @@ def gear_details(request, pk):
 
   if request.method == 'PUT':
     gear = Gear.objects.get(pk=pk)
-    serializer = GearSerializer(data=request.data)
+    serializer = GearSerializer(gear, data=request.data)
     if serializer.is_valid():
       serializer.save()
       return Response(serializer.data)
