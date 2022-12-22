@@ -8,3 +8,16 @@ def gear_list(request):
   data = {'gears': list(gears.values())}
 
   return JsonResponse(data)
+
+
+
+def gear_details(request, pk):
+  gear = Gear.objects.get(pk=pk)
+  data = {
+    'name' : gear.name,
+    'description' : gear.description,
+    'price' : gear.price,
+    'active' : gear.active
+  }
+
+  return JsonResponse(data)
