@@ -1,6 +1,6 @@
 
 from django.urls import path, include
-from gear.views import gear_list, gear_details
+from gear.api.views import gear_list, gear_details
 
 urlpatterns = [
   
