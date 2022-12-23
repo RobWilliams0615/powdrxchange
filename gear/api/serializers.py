@@ -20,9 +20,16 @@ class GearSerializer(serializers.Serializer):
     instance.save()
     return instance
 
+  def validate(self, data):
+    if data['name'] == data['description']:
+      raise serializers.ValidationError('Gear name cannot be same as description.')
+    else:
+      return data
+
   def validate_name(self, value):
     if len(value) < 2:
       raise serializers.ValidationError('Gear name must be at least 2 characters.')
     else:
       return value
+  
   
