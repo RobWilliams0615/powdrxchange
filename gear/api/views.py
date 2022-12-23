@@ -1,6 +1,6 @@
-from gear.models import Gear
+from gear.models import Gear, GearPlatForm
 from rest_framework import status
-from gear.api.serializers import GearSerializer
+from gear.api.serializers import GearSerializer, GearPlatFormSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 # from rest_framework.decorators import api_view
@@ -47,6 +47,57 @@ class GearDetailAV(APIView):
       gear = Gear.objects.get(pk=pk)
       gear.delete()
       return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+class GearPlatFormListAV(APIView):
+
+  def get(self, request):
+    stores = GearPlatForm.objects.all()
+    serializer = GearPlatFormSerializer(stores, many=True)
+    return Response(serializer.data)
+
+  def post(self, request):
+    serializer = GearPlatFormSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+      return Response(serializer.errors)
+
+
+
+class GearPlatFormDetailAV(APIView):
+
+  def get(self, request, pk):
+    try:
+      store = GearPlatForm.objects.get(pk=pk)
+    except GearPlatForm.DoesNotExist:
+      return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = GearPlatFormSerializer(store)
+    return Response(serializer.data)
+
+  def put(self, request, pk):
+    store = GearPlatForm.objects.get(pk=pk)
+    serializer = GearPlatFormSerializer(store, data=request.data)
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data)
+    else:
+      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+  def delete(self, request, pk):
+    if request.method == 'DELETE':
+      store = GearPlatForm.objects.get(pk=pk)
+      store.delete()
+      return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+
 
 # function baes views below 
 
