@@ -1,10 +1,14 @@
 from rest_framework import serializers
 from gear.models import Gear
 
+def name_length(value):
+    if len(value) < 5:
+      raise serializers.ValidationError('Gear name must be at least 2 characters.')
+    
 
 class GearSerializer(serializers.Serializer):
   id = serializers.IntegerField(read_only=True)
-  name = serializers.CharField()
+  name = serializers.CharField(validators=[name_length])
   description = serializers.CharField()
   price = serializers.IntegerField()
   active = serializers.BooleanField()
@@ -24,12 +28,5 @@ class GearSerializer(serializers.Serializer):
     if data['name'] == data['description']:
       raise serializers.ValidationError('Gear name cannot be same as description.')
     else:
-      return data
-
-  def validate_name(self, value):
-    if len(value) < 2:
-      raise serializers.ValidationError('Gear name must be at least 2 characters.')
-    else:
-      return value
-  
+      return data 
   
