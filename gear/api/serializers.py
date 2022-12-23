@@ -20,6 +20,12 @@ class GearSerializer(serializers.ModelSerializer):
       else:
         return data 
 
+    def validate_price(self, value):
+      if value < 0:
+        raise serializers.ValidationError('Price cannot be negative.')
+      else:
+        return value
+
 # class GearSerializer(serializers.Serializer):
 #   id = serializers.IntegerField(read_only=True)
 #   name = serializers.CharField(validators=[name_length])
