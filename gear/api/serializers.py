@@ -2,17 +2,22 @@ from rest_framework import serializers
 from gear.models import Gear, GearPlatForm
 
 
-class GearSerializer(serializers.ModelSerializer):
-
-    class Meta:
-      model = Gear
-      fields = "__all__"
 
 
 class GearPlatFormSerializer(serializers.ModelSerializer):
 
+  
+
   class Meta:
     model = GearPlatForm
+    fields = "__all__"
+    
+class GearSerializer(serializers.ModelSerializer):
+   
+  store = GearPlatFormSerializer(many=True, read_only=True)
+
+  class Meta:
+    model = Gear
     fields = "__all__"
 
     # def validate_name(self, value):
