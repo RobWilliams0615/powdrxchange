@@ -7,5 +7,5 @@ urlpatterns = [
     path('list/', GearListAV.as_view(), name='gear-list'),
     path('store/', GearPlatFormListAV.as_view(), name='store-list'),
     path('<int:pk>', GearDetailAV.as_view(), name='gear-details'),
-    path('<int:pk>', GearPlatFormDetailAV.as_view(), name='store-details'),
+    path('store/<int:pk>', GearPlatFormDetailAV.as_view(), name='store-details'),
 ]
