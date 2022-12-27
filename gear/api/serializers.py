@@ -10,12 +10,23 @@ class GearSerializer(serializers.ModelSerializer):
 
 
 class GearPlatFormSerializer(serializers.ModelSerializer):
-
+  
+  products = GearSerializer(many=True, read_only=True)
   
 
   class Meta:
     model = GearPlatForm
     fields = "__all__"
+
+
+
+
+
+
+
+
+
+
 
     # def validate_name(self, value):
     #     if len(value) < 5:
