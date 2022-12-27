@@ -55,7 +55,7 @@ class GearPlatFormListAV(APIView):
 
   def get(self, request):
     stores = GearPlatForm.objects.all()
-    serializer = GearPlatFormSerializer(stores, many=True)
+    serializer = GearPlatFormSerializer(stores, many=True, context={'request': request})
     return Response(serializer.data)
 
   def post(self, request):

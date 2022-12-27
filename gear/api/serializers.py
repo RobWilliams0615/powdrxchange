@@ -11,7 +11,12 @@ class GearSerializer(serializers.ModelSerializer):
 
 class GearPlatFormSerializer(serializers.ModelSerializer):
   
-  products = GearSerializer(many=True, read_only=True)
+  # products = GearSerializer(many=True, read_only=True)
+  products = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='gear-details'
+    )
   
 
   class Meta:
