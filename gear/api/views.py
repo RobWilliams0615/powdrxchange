@@ -1,16 +1,24 @@
+## App imports ##
+
 from gear.models import Gear, GearPlatForm
+from gear.api.serializers import GearSerializer, GearPlatFormSerializer, Review, ReviewSerializer
+
+## DRF imports ##
+
 from rest_framework import status
-from gear.api.serializers import GearSerializer, GearPlatFormSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework import mixins
 # from rest_framework.decorators import api_view
 
 ## Reviews ##
-class SnippetList(mixins.ListModelMixin,
+
+class GearReviewList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   generics.GenericAPIView):
-    queryset = Snippet.objects.all()
-    serializer_class = SnippetSerializer
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -37,6 +45,7 @@ class GearListAV(APIView):
 
 
 ## Product Details ##
+
 class GearDetailAV(APIView):
 
   def get(self, request, pk):
@@ -66,6 +75,7 @@ class GearDetailAV(APIView):
 
 
 ## Store List ##
+
 class GearPlatFormListAV(APIView):
 
   def get(self, request):
@@ -83,6 +93,7 @@ class GearPlatFormListAV(APIView):
 
 
 ## Store Details ##
+
 class GearPlatFormDetailAV(APIView):
 
   def get(self, request, pk):
@@ -114,7 +125,7 @@ class GearPlatFormDetailAV(APIView):
 
 
 
-# function baes views below 
+## function based views below ##
 
 # @api_view(['GET', 'POST'])
 # def gear_list(request):
