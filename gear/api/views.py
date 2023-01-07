@@ -1,9 +1,38 @@
+## App imports ##
+
 from gear.models import Gear, GearPlatForm
+from gear.api.serializers import GearSerializer, GearPlatFormSerializer, Review, ReviewSerializer
+
+## DRF imports ##
+
 from rest_framework import status
-from gear.api.serializers import GearSerializer, GearPlatFormSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework import mixins
 # from rest_framework.decorators import api_view
+
+## Reviews ##
+class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def get(self, request, *args, **kwargs):
+      return self.retrieve(request, *args, **kwargs)
+
+class GearReviewList(mixins.ListModelMixin,
+                mixins.CreateModelMixin,
+                generics.GenericAPIView):
+  queryset = Review.objects.all()
+  serializer_class = ReviewSerializer
+
+  def get(self, request, *args, **kwargs):
+      return self.list(request, *args, **kwargs)
+
+  def post(self, request, *args, **kwargs):
+      return self.create(request, *args, **kwargs)
+
+## Product List ##
 
 class GearListAV(APIView):
 
@@ -21,6 +50,7 @@ class GearListAV(APIView):
       return Response(serializer.errors, status=status.HTTP_201_CREATED)
 
 
+## Product Details ##
 
 class GearDetailAV(APIView):
 
@@ -50,6 +80,7 @@ class GearDetailAV(APIView):
 
 
 
+## Store List ##
 
 class GearPlatFormListAV(APIView):
 
@@ -67,6 +98,7 @@ class GearPlatFormListAV(APIView):
       return Response(serializer.errors)
 
 
+## Store Details ##
 
 class GearPlatFormDetailAV(APIView):
 
@@ -99,7 +131,7 @@ class GearPlatFormDetailAV(APIView):
 
 
 
-# function baes views below 
+## function based views below ##
 
 # @api_view(['GET', 'POST'])
 # def gear_list(request):
