@@ -5,6 +5,21 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 # from rest_framework.decorators import api_view
 
+## Reviews ##
+class SnippetList(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
+    queryset = Snippet.objects.all()
+    serializer_class = SnippetSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+## Product List ##
+
 class GearListAV(APIView):
 
   def get(self, request):
@@ -21,7 +36,7 @@ class GearListAV(APIView):
       return Response(serializer.errors, status=status.HTTP_201_CREATED)
 
 
-
+## Product Details ##
 class GearDetailAV(APIView):
 
   def get(self, request, pk):
@@ -50,7 +65,7 @@ class GearDetailAV(APIView):
 
 
 
-
+## Store List ##
 class GearPlatFormListAV(APIView):
 
   def get(self, request):
@@ -67,7 +82,7 @@ class GearPlatFormListAV(APIView):
       return Response(serializer.errors)
 
 
-
+## Store Details ##
 class GearPlatFormDetailAV(APIView):
 
   def get(self, request, pk):
