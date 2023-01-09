@@ -1,7 +1,8 @@
 ## App imports ##
 
 from gear.models import Gear, GearPlatForm
-from gear.api.serializers import GearSerializer, GearPlatFormSerializer, Review, ReviewSerializer
+from gear.api.serializers import (GearSerializer, GearPlatFormSerializer,
+                                   Review, ReviewSerializer)
 
 ## DRF imports ##
 
@@ -9,28 +10,41 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
-from rest_framework import mixins
+# from rest_framework import mixins
 # from rest_framework.decorators import api_view
 
-## Reviews ##
-class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+
+class GearReviewList(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
-    def get(self, request, *args, **kwargs):
-      return self.retrieve(request, *args, **kwargs)
 
-class GearReviewList(mixins.ListModelMixin,
-                mixins.CreateModelMixin,
-                generics.GenericAPIView):
-  queryset = Review.objects.all()
-  serializer_class = ReviewSerializer
+class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
 
-  def get(self, request, *args, **kwargs):
-      return self.list(request, *args, **kwargs)
 
-  def post(self, request, *args, **kwargs):
-      return self.create(request, *args, **kwargs)
+
+
+## Reviews ##
+# class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+
+#     def get(self, request, *args, **kwargs):
+#       return self.retrieve(request, *args, **kwargs)
+
+# class GearReviewList(mixins.ListModelMixin,
+#                 mixins.CreateModelMixin,
+#                 generics.GenericAPIView):
+#   queryset = Review.objects.all()
+#   serializer_class = ReviewSerializer
+
+#   def get(self, request, *args, **kwargs):
+#       return self.list(request, *args, **kwargs)
+
+#   def post(self, request, *args, **kwargs):
+#       return self.create(request, *args, **kwargs)
 
 ## Product List ##
 
