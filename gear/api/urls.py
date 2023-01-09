@@ -8,6 +8,7 @@ urlpatterns = [
     path('store/', GearPlatFormListAV.as_view(), name='store-list'),
     path('<int:pk>', GearDetailAV.as_view(), name='gear-details'),
     path('store/<int:pk>', GearPlatFormDetailAV.as_view(), name='store-details'),
+    path('store/1/review', GearPlatFormDetailAV.as_view(), name='store-details'),
     path('review', GearReviewList.as_view(), name='gear-reviews'),
-    path('review/<int:pk>', ReviewDetail.as_view(), name='gear-reviews-details'),
+    path('store/review/<int:pk>', ReviewDetail.as_view(), name='gear-reviews-details'),
 ]
