@@ -13,6 +13,7 @@ from rest_framework import generics
 # from rest_framework import mixins
 # from rest_framework.decorators import api_view
 
+## Concrete Generic Class-based views ##
 
 class GearReviewList(generics.ListCreateAPIView):
     queryset = Review.objects.all()
@@ -26,7 +27,8 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 
-## Reviews ##
+## Mixin Views ##
+
 # class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
 #     queryset = Review.objects.all()
 #     serializer_class = ReviewSerializer
