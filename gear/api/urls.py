@@ -3,7 +3,7 @@ from django.urls import path, include
 # from gear.api.views import gear_list, gear_details
 from gear.api.views import (GearDetailAV, GearListAV, GearPlatFormListAV, 
                             GearPlatFormDetailAV, GearReviewList,
-                             ReviewDetail)
+                             ReviewDetail, GearReviewCreate)
 
 urlpatterns = [
     path('list/', GearListAV.as_view(), name='gear-list'),
@@ -13,5 +13,6 @@ urlpatterns = [
     # path('reviews/', GearReviewList.as_view(), name='gear-reviews'),
     # path('review/<int:pk>', ReviewDetail.as_view(), name='gear-reviews-details'),
     path('product/<int:pk>/review', GearReviewList.as_view(), name='gear-reviews-list'),
+    path('product/<int:pk>/review-create', GearReviewCreate.as_view(), name='gear-reviews-create'),
     path('product/review/<int:pk>', ReviewDetail.as_view(), name='gear-review-details'),
 ]

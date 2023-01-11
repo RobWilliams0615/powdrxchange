@@ -15,6 +15,16 @@ from rest_framework import generics
 
 ## Concrete Generic Class-based views ##
 
+class GearReviewCreate(generics.CreateAPIView):
+    serializer_class = ReviewSerializer
+    
+    def perform_create(self, serializer):
+      pk = self.kwargs.get('pk')
+      gear = Gear.objects.get(pk=pk)
+
+      serializer.save(gear=gear)
+      return super().perform_create(serializer)
+
 class GearReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
 
