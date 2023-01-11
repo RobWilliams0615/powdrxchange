@@ -15,9 +15,12 @@ from rest_framework import generics
 
 ## Concrete Generic Class-based views ##
 
-class GearReviewList(generics.ListCreateAPIView):
-    queryset = Review.objects.all()
+class GearReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+      pk = self.kwargs['pk']
+      return Review.objects.filter(gear=pk)
 
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
