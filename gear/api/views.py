@@ -13,7 +13,10 @@ from rest_framework import generics
 # from rest_framework import mixins
 # from rest_framework.decorators import api_view
 
-## Concrete Generic Class-based views ##
+### Concrete Generic Class-based views ###
+
+
+## Creates a review for specific gear item ## 
 
 class GearReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
@@ -25,6 +28,8 @@ class GearReviewCreate(generics.CreateAPIView):
       serializer.save(gear=gear)
       return super().perform_create(serializer)
 
+## Shows entire list of reviews ##
+
 class GearReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
 
@@ -32,34 +37,12 @@ class GearReviewList(generics.ListAPIView):
       pk = self.kwargs['pk']
       return Review.objects.filter(gear=pk)
 
+## Shows details of review ## 
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
-
-
-
-## Mixin Views ##
-
-# class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
-#     queryset = Review.objects.all()
-#     serializer_class = ReviewSerializer
-
-#     def get(self, request, *args, **kwargs):
-#       return self.retrieve(request, *args, **kwargs)
-
-# class GearReviewList(mixins.ListModelMixin,
-#                 mixins.CreateModelMixin,
-#                 generics.GenericAPIView):
-#   queryset = Review.objects.all()
-#   serializer_class = ReviewSerializer
-
-#   def get(self, request, *args, **kwargs):
-#       return self.list(request, *args, **kwargs)
-
-#   def post(self, request, *args, **kwargs):
-#       return self.create(request, *args, **kwargs)
 
 ## Product List ##
 
@@ -156,9 +139,28 @@ class GearPlatFormDetailAV(APIView):
       return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+#### former code below ####
 
+## Mixin Views ##
 
+# class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
 
+#     def get(self, request, *args, **kwargs):
+#       return self.retrieve(request, *args, **kwargs)
+
+# class GearReviewList(mixins.ListModelMixin,
+#                 mixins.CreateModelMixin,
+#                 generics.GenericAPIView):
+#   queryset = Review.objects.all()
+#   serializer_class = ReviewSerializer
+
+#   def get(self, request, *args, **kwargs):
+#       return self.list(request, *args, **kwargs)
+
+#   def post(self, request, *args, **kwargs):
+#       return self.create(request, *args, **kwargs)
 
 ## function based views below ##
 
