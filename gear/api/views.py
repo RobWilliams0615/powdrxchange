@@ -10,7 +10,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
-# from rest_framework.decorators import api_view
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 
 ## Reviews ##
 
@@ -23,9 +24,6 @@ class GearReviewCreate(generics.CreateAPIView):
       gear = Gear.objects.get(pk=pk)
 
       serializer.save(gear=gear)
-
-      
-
 
 class GearReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
@@ -88,6 +86,18 @@ class GearDetailAV(APIView):
 
 
 ## Store List ##
+
+class GearStoreViewSet(viewsets.ViewSet):
+    def list(self, request):
+        queryset = GearPlatForm.objects.all()
+        serializer = GearPlatFormSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = GearPlatForm.objects.all()
+        gear = get_object_or_404(queryset, pk=pk)
+        serializer = GearPlatFormSerializer(gear, context={'request': request})
+        return Response(serializer.data)
 
 class GearPlatFormListAV(APIView):
 
