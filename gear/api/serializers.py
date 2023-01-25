@@ -5,8 +5,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Review
-    exclude = ('gear',)
-    # fields = "__all__"
+    fields = "__all__"
 
 class GearSerializer(serializers.ModelSerializer):
   reviews = ReviewSerializer(many=True, read_only=True)
@@ -17,10 +16,9 @@ class GearSerializer(serializers.ModelSerializer):
 
 
 class GearPlatFormSerializer(serializers.ModelSerializer):
-  products = serializers.HyperlinkedRelatedField(
+  products = GearSerializer(
         many=True,
         read_only=True,
-        view_name='gear-details'
     )
   
 
