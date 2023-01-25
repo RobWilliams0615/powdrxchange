@@ -12,6 +12,7 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
 # from rest_framework.decorators import api_view
+from django.shortcuts import get_object_or_404
 
 ## Reviews ##
 
@@ -93,13 +94,13 @@ class GearDetailAV(APIView):
 class GearStoreViewSet(viewsets.ViewSet):
     def list(self, request):
         queryset = GearPlatForm.objects.all()
-        serializer = GearPlatFormSerializer(queryset, many=True)
+        serializer = GearPlatFormSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         queryset = GearPlatForm.objects.all()
-        GearPlatForm = get_object_or_404(queryset, pk=pk)
-        serializer = GearPlatFormSerializer(GearPlatForm)
+        gear = get_object_or_404(queryset, pk=pk)
+        serializer = GearPlatFormSerializer(gear, context={'request': request})
         return Response(serializer.data)
 
 class GearPlatFormListAV(APIView):
