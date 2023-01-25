@@ -11,7 +11,6 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
-# from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
 
 ## Reviews ##
@@ -25,9 +24,6 @@ class GearReviewCreate(generics.CreateAPIView):
       gear = Gear.objects.get(pk=pk)
 
       serializer.save(gear=gear)
-
-      
-
 
 class GearReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
