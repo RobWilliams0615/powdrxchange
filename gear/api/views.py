@@ -13,14 +13,12 @@ from rest_framework import mixins
 # from rest_framework.decorators import api_view
 
 ## Reviews ##
-class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
-    def get(self, request, *args, **kwargs):
-      return self.retrieve(request, *args, **kwargs)
 
-class GearReviewList(generics.ListCreateAPIView):
+class GearReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
 
     def get_queryset(self):
