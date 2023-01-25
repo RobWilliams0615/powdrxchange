@@ -5,7 +5,8 @@ class ReviewSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Review
-    fields = "__all__"
+    exclude = ('gear',)
+    # fields = "__all__"
 
 class GearSerializer(serializers.ModelSerializer):
   reviews = ReviewSerializer(many=True, read_only=True)
