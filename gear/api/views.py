@@ -1,6 +1,6 @@
 ## App imports ##
 
-from gear.models import Gear, GearPlatForm
+from gear.models import Gear, GearPlatForm, Review
 from gear.api.serializers import GearSerializer, GearPlatFormSerializer, Review, ReviewSerializer
 
 ## DRF imports ##
@@ -13,14 +13,26 @@ from rest_framework import mixins
 # from rest_framework.decorators import api_view
 
 ## Reviews ##
-class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+
+class GearReviewCreate(generics.CreateAPIView):
+    serializer_class = ReviewSerializer
+
+
+    def perform_create(self, serializer):
+      pk = self.kwargs.get('pk')
+      gear = Gear.objects.get(pk=pk)
+
+      serializer.save(gear=gear)
+
+      
+
+
+class GearReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
-    def get(self, request, *args, **kwargs):
-      return self.retrieve(request, *args, **kwargs)
 
-class GearReviewList(generics.ListCreateAPIView):
+class GearReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
 
     def get_queryset(self):
