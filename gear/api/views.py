@@ -20,17 +20,12 @@ class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
       return self.retrieve(request, *args, **kwargs)
 
-class GearReviewList(mixins.ListModelMixin,
-                mixins.CreateModelMixin,
-                generics.GenericAPIView):
-  queryset = Review.objects.all()
-  serializer_class = ReviewSerializer
+class GearReviewList(generics.ListCreateAPIView):
+    serializer_class = ReviewSerializer
 
-  def get(self, request, *args, **kwargs):
-      return self.list(request, *args, **kwargs)
-
-  def post(self, request, *args, **kwargs):
-      return self.create(request, *args, **kwargs)
+    def get_queryset(self):
+      pk = self.kwargs['pk']
+      return Review.objects.filter(gear=pk)
 
 ## Product List ##
 
@@ -131,43 +126,3 @@ class GearPlatFormDetailAV(APIView):
 
 
 
-## function based views below ##
-
-# @api_view(['GET', 'POST'])
-# def gear_list(request):
-#   if request.method == 'GET':
-#     gears = Gear.objects.all()
-#     serializer = GearSerializer(gears, many=True)
-#     return Response(serializer.data, status=status.HTTP_200_OK)
-
-#   if request.method == 'POST':
-#     serializer = GearSerializer(data=request.data)
-#     if serializer.is_valid():
-#         serializer.save()
-#         return Response(serializer.data)
-#     else:
-#       return Response(serializer.errors, status=status.HTTP_201_CREATED)
-  
-
-# @api_view(['GET', 'PUT', 'DELETE'])
-# def gear_details(request, pk):
-
-#   if request.method == 'GET':
-#     gear = Gear.objects.get(pk=pk)
-#     serializer = GearSerializer(gear)
-#     return Response(serializer.data)
-
-#   if request.method == 'PUT':
-#     gear = Gear.objects.get(pk=pk)
-#     serializer = GearSerializer(gear, data=request.data)
-#     if serializer.is_valid():
-#       serializer.save()
-#       return Response(serializer.data)
-#     else:
-#       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-#   if request.method == 'DELETE':
-#     gear = Gear.objects.get(pk=pk)
-#     gear.delete()
-#     return Response(status=status.HTTP_204_NO_CONTENT)
