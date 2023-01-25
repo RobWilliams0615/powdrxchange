@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
+from rest_framework import viewsets
 # from rest_framework.decorators import api_view
 
 ## Reviews ##
@@ -88,6 +89,18 @@ class GearDetailAV(APIView):
 
 
 ## Store List ##
+
+class GearStoreViewSet(viewsets.ViewSet):
+    def list(self, request):
+        queryset = GearPlatForm.objects.all()
+        serializer = GearPlatFormSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = GearPlatForm.objects.all()
+        GearPlatForm = get_object_or_404(queryset, pk=pk)
+        serializer = GearPlatFormSerializer(GearPlatForm)
+        return Response(serializer.data)
 
 class GearPlatFormListAV(APIView):
 
