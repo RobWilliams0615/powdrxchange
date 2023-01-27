@@ -99,6 +99,22 @@ class GearStoreViewSet(viewsets.ViewSet):
         serializer = GearPlatFormSerializer(gear, context={'request': request})
         return Response(serializer.data)
 
+
+    def create(self, request):
+      serializer = GearPlatFormSerializer(data=request.data)
+      if serializer.is_valid():
+          serializer.save()
+          return Response(serializer.data)
+      else:
+        return Response(serializer.errors)
+
+    def delete(self, request, pk):
+      if request.method == 'DELETE':
+        store = GearPlatForm.objects.get(pk=pk)
+        store.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class GearPlatFormListAV(APIView):
 
   def get(self, request):
@@ -113,6 +129,8 @@ class GearPlatFormListAV(APIView):
         return Response(serializer.data)
     else:
       return Response(serializer.errors)
+
+  
 
 
 ## Store Details ##
