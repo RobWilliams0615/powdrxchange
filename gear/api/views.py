@@ -99,6 +99,16 @@ class GearStoreViewSet(viewsets.ViewSet):
         serializer = GearPlatFormSerializer(gear, context={'request': request})
         return Response(serializer.data)
 
+
+    def create(self, request):
+      serializer = GearPlatFormSerializer(data=request.data)
+      if serializer.is_valid():
+          serializer.save()
+          return Response(serializer.data)
+      else:
+        return Response(serializer.errors)
+
+
 class GearPlatFormListAV(APIView):
 
   def get(self, request):
