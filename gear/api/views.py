@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
+from rest_framework.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 
 ## Reviews ##
@@ -22,6 +23,12 @@ class GearReviewCreate(generics.CreateAPIView):
     def perform_create(self, serializer):
       pk = self.kwargs.get('pk')
       gear = Gear.objects.get(pk=pk)
+
+      reviewer = self.request.user
+      review_queryset = Review.object.filter(gear=gear, reviewer=reviewer)
+
+      if review_queryset.exists():
+        raise ValidationError("You have already reviewed this product")
 
       serializer.save(gear=gear)
 
