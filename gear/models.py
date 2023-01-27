@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import User
 
 
 class GearPlatForm(models.Model):
@@ -31,6 +32,7 @@ class Gear(models.Model):
 
 
 class Review(models.Model):
+  reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
   rating = models.PositiveBigIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
   gear = models.ForeignKey(Gear, on_delete=models.CASCADE, related_name="reviews")
   description = models.CharField(max_length=250, null=True)

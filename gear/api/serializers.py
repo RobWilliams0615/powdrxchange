@@ -2,6 +2,7 @@ from rest_framework import serializers
 from gear.models import Gear, GearPlatForm, Review
 
 class ReviewSerializer(serializers.ModelSerializer):
+  reviewer = serializers.StringRelatedField(read_only=True)
 
   class Meta:
     model = Review
