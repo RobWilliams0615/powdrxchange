@@ -108,6 +108,12 @@ class GearStoreViewSet(viewsets.ViewSet):
       else:
         return Response(serializer.errors)
 
+    def delete(self, request, pk):
+      if request.method == 'DELETE':
+        store = GearPlatForm.objects.get(pk=pk)
+        store.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class GearPlatFormListAV(APIView):
 
@@ -123,6 +129,8 @@ class GearPlatFormListAV(APIView):
         return Response(serializer.data)
     else:
       return Response(serializer.errors)
+
+  
 
 
 ## Store Details ##
