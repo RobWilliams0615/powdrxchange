@@ -2,6 +2,7 @@
 
 from gear.models import Gear, GearPlatForm, Review
 from gear.api.serializers import GearSerializer, GearPlatFormSerializer, Review, ReviewSerializer
+from gear.api.permissions import AdminorReadOnly
 
 ## DRF imports ##
 
@@ -39,7 +40,7 @@ class GearReviewCreate(generics.CreateAPIView):
 class GearReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AdminorReadOnly]
 
 
 class GearReviewList(generics.ListAPIView):
