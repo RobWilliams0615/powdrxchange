@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.shortcuts import get_object_or_404
 
 ## Reviews ##
@@ -45,7 +45,7 @@ class GearReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class GearReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
       pk = self.kwargs['pk']
