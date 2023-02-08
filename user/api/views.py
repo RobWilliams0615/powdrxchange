@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from user.api.serializers import Register
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from user.api.models import create_auth_token
 
 @api_view(['POST'])
 def register_view(request):
@@ -23,4 +24,4 @@ def register_view(request):
       else:
           data = serializer.errors
 
-      return Response(serializer.data)
+      return Response(data)
