@@ -3,25 +3,36 @@ from user.api.serializers import Register
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from user.api.models import create_auth_token
+from rest_framework import status
+
+
+
+@api_view(['POST',])
+def logout_view(request):
+
+    if request.method == 'POST':
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def register_view(request):
+    
     if request.method == 'POST':
-      serializer = Register(data=request.data)
+        serializer = Register(data=request.data)
 
-      data = {}
+        data = {}
 
-      if serializer.is_valid():
-          account = serializer.save()
+        if serializer.is_valid():
+            account = serializer.save()
 
-          data['response'] = "Registration succesful"
-          data['username'] = account.username
-          data['email'] = account.email
+            data['response'] = "Registration succesful"
+            data['username'] = account.username
+            data['email'] = account.email
 
-          token = Token.objects.get(user=account).key
-          data['token'] = token
+            token = Token.objects.get(user=account).key
+            data['token'] = token
 
-      else:
-          data = serializer.errors
+        else:
+            data = serializer.errors
 
-      return Response(data)
+        return Response(data)
