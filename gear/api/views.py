@@ -2,7 +2,7 @@
 
 from gear.models import Gear, GearPlatForm, Review
 from gear.api.serializers import GearSerializer, GearPlatFormSerializer, Review, ReviewSerializer
-from gear.api.permissions import AdminorReadOnly, ReviewerOrReadOnly
+from gear.api.permissions import IsAdminorReadOnly, ReviewerOrReadOnly
 
 ## DRF imports ##
 
@@ -72,30 +72,31 @@ class GearListAV(APIView):
 ## Product Details ##
 
 class GearDetailAV(APIView):
+    permission_classes = [IsAdminorReadOnly]
 
-  def get(self, request, pk):
-    try:
-      gear = Gear.objects.get(pk=pk)
-    except Gear.DoesNotExist:
-      return Response(status=status.HTTP_404_NOT_FOUND)
+    def get(self, request, pk):
+      try:
+        gear = Gear.objects.get(pk=pk)
+      except Gear.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = GearSerializer(gear)
-    return Response(serializer.data)
-
-  def put(self, request, pk):
-    gear = Gear.objects.get(pk=pk)
-    serializer = GearSerializer(gear, data=request.data)
-    if serializer.is_valid():
-      serializer.save()
+      serializer = GearSerializer(gear)
       return Response(serializer.data)
-    else:
-      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-  def delete(self, request, pk):
-    if request.method == 'DELETE':
+    def put(self, request, pk):
       gear = Gear.objects.get(pk=pk)
-      gear.delete()
-      return Response(status=status.HTTP_204_NO_CONTENT)
+      serializer = GearSerializer(gear, data=request.data)
+      if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+      else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+      if request.method == 'DELETE':
+        gear = Gear.objects.get(pk=pk)
+        gear.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
