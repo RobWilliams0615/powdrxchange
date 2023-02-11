@@ -54,7 +54,8 @@ class GearReviewList(generics.ListAPIView):
 ## Product List ##
 
 class GearListAV(APIView):
-
+  permission_classes = [IsAdminorReadOnly]
+  
   def get(self, request):
     gears = Gear.objects.all()
     serializer = GearSerializer(gears, many=True)
