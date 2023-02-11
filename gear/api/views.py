@@ -45,7 +45,7 @@ class GearReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class GearReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticated]
+    
 
     def get_queryset(self):
       pk = self.kwargs['pk']
@@ -106,6 +106,7 @@ class GearDetailAV(APIView):
 class GearStoreViewSet(viewsets.ModelViewSet):
     queryset = GearPlatForm.objects.all()
     serializer_class = GearPlatFormSerializer
+    permission_classes = [IsAdminorReadOnly]
 
 
 class GearPlatFormListAV(APIView):
