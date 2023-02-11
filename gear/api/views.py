@@ -55,7 +55,7 @@ class GearReviewList(generics.ListAPIView):
 
 class GearListAV(APIView):
   permission_classes = [IsAdminorReadOnly]
-  
+
   def get(self, request):
     gears = Gear.objects.all()
     serializer = GearSerializer(gears, many=True)
@@ -109,6 +109,7 @@ class GearStoreViewSet(viewsets.ModelViewSet):
 
 
 class GearPlatFormListAV(APIView):
+  permission_classes = [IsAdminorReadOnly]
 
   def get(self, request):
     stores = GearPlatForm.objects.all()
@@ -129,6 +130,7 @@ class GearPlatFormListAV(APIView):
 ## Store Details ##
 
 class GearPlatFormDetailAV(APIView):
+  permission_classes = [IsAdminorReadOnly]
 
   def get(self, request, pk):
     try:
