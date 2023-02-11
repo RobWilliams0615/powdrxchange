@@ -19,6 +19,8 @@ from django.shortcuts import get_object_or_404
 
 class GearReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
+
 
     def get_queryset(self):
       return Review.objects.all()
