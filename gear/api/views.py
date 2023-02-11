@@ -2,7 +2,7 @@
 
 from gear.models import Gear, GearPlatForm, Review
 from gear.api.serializers import GearSerializer, GearPlatFormSerializer, Review, ReviewSerializer
-from gear.api.permissions import AdminorReadOnly, ReviewerOrReadOnly
+from gear.api.permissions import IsAdminorReadOnly, ReviewerOrReadOnly
 
 ## DRF imports ##
 
@@ -19,6 +19,8 @@ from django.shortcuts import get_object_or_404
 
 class GearReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
+
 
     def get_queryset(self):
       return Review.objects.all()
@@ -45,7 +47,7 @@ class GearReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class GearReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticated]
+    
 
     def get_queryset(self):
       pk = self.kwargs['pk']
@@ -54,6 +56,7 @@ class GearReviewList(generics.ListAPIView):
 ## Product List ##
 
 class GearListAV(APIView):
+  permission_classes = [IsAdminorReadOnly]
 
   def get(self, request):
     gears = Gear.objects.all()
@@ -72,30 +75,31 @@ class GearListAV(APIView):
 ## Product Details ##
 
 class GearDetailAV(APIView):
+    permission_classes = [IsAdminorReadOnly]
 
-  def get(self, request, pk):
-    try:
-      gear = Gear.objects.get(pk=pk)
-    except Gear.DoesNotExist:
-      return Response(status=status.HTTP_404_NOT_FOUND)
+    def get(self, request, pk):
+      try:
+        gear = Gear.objects.get(pk=pk)
+      except Gear.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = GearSerializer(gear)
-    return Response(serializer.data)
-
-  def put(self, request, pk):
-    gear = Gear.objects.get(pk=pk)
-    serializer = GearSerializer(gear, data=request.data)
-    if serializer.is_valid():
-      serializer.save()
+      serializer = GearSerializer(gear)
       return Response(serializer.data)
-    else:
-      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-  def delete(self, request, pk):
-    if request.method == 'DELETE':
+    def put(self, request, pk):
       gear = Gear.objects.get(pk=pk)
-      gear.delete()
-      return Response(status=status.HTTP_204_NO_CONTENT)
+      serializer = GearSerializer(gear, data=request.data)
+      if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+      else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+      if request.method == 'DELETE':
+        gear = Gear.objects.get(pk=pk)
+        gear.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
@@ -104,9 +108,11 @@ class GearDetailAV(APIView):
 class GearStoreViewSet(viewsets.ModelViewSet):
     queryset = GearPlatForm.objects.all()
     serializer_class = GearPlatFormSerializer
+    permission_classes = [IsAdminorReadOnly]
 
 
 class GearPlatFormListAV(APIView):
+  permission_classes = [IsAdminorReadOnly]
 
   def get(self, request):
     stores = GearPlatForm.objects.all()
@@ -127,6 +133,7 @@ class GearPlatFormListAV(APIView):
 ## Store Details ##
 
 class GearPlatFormDetailAV(APIView):
+  permission_classes = [IsAdminorReadOnly]
 
   def get(self, request, pk):
     try:
